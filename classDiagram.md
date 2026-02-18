@@ -269,37 +269,7 @@ flowchart TD
 
 ---
 
-## 3. Observer Pattern Flowchart (Notification System)
-
-```mermaid
-flowchart LR
-    A[TaskService\nSubject] -->|"assignTask() called"| B{Event Type}
-    B -->|"TASK_ASSIGNED"| C[NotificationService\nObserver]
-    B -->|"STATUS_CHANGED"| C
-    C --> D[NotificationRepository]
-    D --> E[(NOTIFICATIONS\nCollection)]
-    E --> F[Member views\nNotification]
-
-    style A fill:#0f3460,stroke:#e94560,color:#fff
-    style C fill:#44337a,stroke:#b794f4,color:#fff
-    style E fill:#1a1a2e,stroke:#2ea043,color:#fff
-```
-
----
-
-## 4. Design Pattern Mapping Table
-
-| Design Pattern | Class(es) Involved | How It Is Applied |
-|---------------|-------------------|-------------------|
-| **Repository Pattern** | `IUserRepository`, `IProjectRepository`, `ITaskRepository`, `INotificationRepository` | Interfaces abstract all database operations. Services depend on interfaces, not concrete implementations. Enables swapping MongoDB for any other database without changing business logic. |
-| **State Pattern** | `Task`, `TaskStatus` | The `Task.transitionStatus()` method enforces valid state transitions: `TODO → IN_PROGRESS → DONE`. Invalid transitions are rejected by `validateTransition()`. |
-| **Observer Pattern** | `TaskService`, `NotificationService` | `TaskService` (Subject) calls `NotificationService.notify()` (Observer) after task assignment or status change. Notification logic is fully decoupled from task logic. |
-| **Strategy Pattern** | `TaskService.filterTasks()`, `TaskService.sortTasks()` | Filtering and sorting algorithms are passed as strategies at runtime, allowing different criteria (by priority, deadline, status) to be applied interchangeably. |
-| **Singleton Pattern** | Database Connection (conceptual) | The MongoDB connection is instantiated once and reused across all repositories. Prevents connection pool exhaustion. |
-
----
-
-## 5. OOP Principle Mapping Table
+## 3. OOP Principle Mapping Table
 
 | OOP Principle | Class(es) Involved | How It Is Applied |
 |--------------|-------------------|-------------------|

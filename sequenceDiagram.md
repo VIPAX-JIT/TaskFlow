@@ -178,18 +178,7 @@ flowchart TD
 
 ---
 
-## 6. Design Pattern Usage
-
-| Pattern | Where Used | How It Works |
-|---------|-----------|--------------|
-| **Repository Pattern** | Phases 2, 3, 4 | Server never queries the database directly — all DB operations go through repository classes, keeping business logic clean. |
-| **Observer Pattern** | Phase 4 | After task assignment, the Server (Subject) notifies the NotificationSystem (Observer) automatically. Notification logic is fully decoupled. |
-| **State Pattern** | Phase 3 | Task status follows strict transitions: `TODO → IN_PROGRESS → DONE`. Any invalid jump is rejected with a `400` error. |
-| **Singleton Pattern** | All Phases | A single shared database connection is reused across all operations throughout the entire flow. |
-
----
-
-## 7. Error Scenarios
+## 6. Error Scenarios
 
 | Scenario | HTTP Status | Meaning |
 |----------|------------|---------|
