@@ -1,6 +1,5 @@
 # TaskFlow – Sequence Diagram
 
-> **Milestone:** 1 | **Diagram Type:** Sequence Diagram + Supporting Flowcharts
 > **Main Flow:** Admin logs in → creates a task → assigns it to a Member → System triggers a notification
 
 ---

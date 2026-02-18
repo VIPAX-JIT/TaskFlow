@@ -1,6 +1,6 @@
 # TaskFlow – Entity Relationship Diagram
 
-> **Milestone:** 1 | **Diagram Type:** ER Diagram
+
 > **Database:** MongoDB (document-oriented; relationships modeled via references)
 
 ---

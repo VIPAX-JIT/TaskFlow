@@ -1,6 +1,6 @@
 # TaskFlow – Use Case Diagram
 
-> **Milestone:** 1 | **Diagram Type:** Use Case Diagram + Actor Flow Charts
+
 
 ---
 

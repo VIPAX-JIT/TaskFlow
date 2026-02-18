@@ -1,9 +1,9 @@
 # TaskFlow – Team Task & Project Management System
 
-> **Course:** Software Engineering & System Design (SESD)
-> **Milestone:** 1 – Project Ideation & System Design
-> **Weightage:** Backend 75% | Frontend 25%
-> **Date:** February 2026
+
+
+
+
 
 ---
 

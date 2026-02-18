@@ -1,6 +1,6 @@
 # TaskFlow – Class Diagram
 
-> **Milestone:** 1 | **Diagram Type:** Class Diagram + Inheritance & Pattern Flowcharts
+
 
 ---
 
