@@ -27,7 +27,7 @@ sequenceDiagram
     %% PHASE 1: Authentication
     %% ════════════════════════════════════════════════════════════════════════
     rect rgb(14, 30, 60)
-        Note over Admin, Database: ── PHASE 1: Authentication ──
+        Note over Admin, Database: PHASE 1 - Authentication
 
         Admin ->> Client: Enter credentials (email, password)
         Client ->> Routes: POST /api/auth/login
@@ -36,17 +36,17 @@ sequenceDiagram
         AuthService ->> Database: findUserByEmail(email)
 
         alt Authentication Failure
-            Database -->> AuthService: null (user not found)
-            AuthService -->> AuthController: throw UnauthorizedError("Invalid credentials")
-            AuthController -->> Client: 401 Unauthorized { error: "Invalid credentials" }
-            Client -->> Admin: Show error message; stay on login page
+            Database -->> AuthService: null - user not found
+            AuthService -->> AuthController: throw UnauthorizedError - Invalid credentials
+            AuthController -->> Client: 401 Unauthorized - Invalid credentials
+            Client -->> Admin: Show error message and stay on login page
         else Authentication Success
-            Database -->> AuthService: User document
+            Database -->> AuthService: User document returned
             AuthService ->> AuthService: validatePassword(password, hash)
-            AuthService ->> AuthService: generateJWT(userId, role, expiresIn: 7d)
-            AuthService -->> AuthController: { token: "JWT_TOKEN" }
-            AuthController -->> Client: 200 OK { token: "JWT_TOKEN", role: "ADMIN" }
-            Client -->> Admin: Store token in localStorage; redirect to dashboard
+            AuthService ->> AuthService: generateJWT(userId, role, expiresIn 7d)
+            AuthService -->> AuthController: token JWT_TOKEN
+            AuthController -->> Client: 200 OK - token and role ADMIN
+            Client -->> Admin: Store token in localStorage and redirect to dashboard
         end
     end
 
@@ -54,43 +54,43 @@ sequenceDiagram
     %% PHASE 2: Task Creation
     %% ════════════════════════════════════════════════════════════════════════
     rect rgb(10, 40, 30)
-        Note over Admin, Database: ── PHASE 2: Task Creation ──
+        Note over Admin, Database: PHASE 2 - Task Creation
 
-        Admin ->> Client: Fill task form (title, priority, deadline, projectId)
-        Client ->> Routes: POST /api/tasks [Authorization: Bearer JWT_TOKEN]
-        Routes ->> Routes: JWT Middleware → verifyToken(token)
-        Routes ->> Routes: Role Guard → checkRole(ADMIN)
+        Admin ->> Client: Fill task form with title, priority, deadline, projectId
+        Client ->> Routes: POST /api/tasks with Bearer JWT_TOKEN
+        Routes ->> Routes: JWT Middleware - verifyToken
+        Routes ->> Routes: Role Guard - checkRole ADMIN
         Routes ->> TaskController: createTask(req, res)
         TaskController ->> TaskService: createTask(projectId, taskData, adminId)
         TaskService ->> TaskService: validateTaskData(taskData)
-        TaskService ->> TaskRepository: save(newTask { status: TODO, priority, deadline })
+        TaskService ->> TaskRepository: save newTask with status TODO
         TaskRepository ->> Database: db.tasks.insertOne(taskDocument)
         Database -->> TaskRepository: Inserted task document with _id
-        TaskRepository -->> TaskService: Task object { id, title, status: "TODO" }
+        TaskRepository -->> TaskService: Task object with id, title, status TODO
         TaskService -->> TaskController: Task created successfully
-        TaskController -->> Client: 201 Created { task: { id, title, status: "TODO" } }
-        Client -->> Admin: Show "Task created" confirmation toast
+        TaskController -->> Client: 201 Created - task id, title, status TODO
+        Client -->> Admin: Show Task created confirmation toast
     end
 
     %% ════════════════════════════════════════════════════════════════════════
     %% PHASE 3: Task Assignment
     %% ════════════════════════════════════════════════════════════════════════
     rect rgb(40, 20, 60)
-        Note over Admin, Database: ── PHASE 3: Task Assignment ──
+        Note over Admin, Database: PHASE 3 - Task Assignment
 
-        Admin ->> Client: Select Member from dropdown; click "Assign Task"
-        Client ->> Routes: PATCH /api/tasks/:taskId/assign [Authorization: Bearer JWT_TOKEN]
-        Routes ->> Routes: JWT Middleware → verifyToken(token)
-        Routes ->> Routes: Role Guard → checkRole(ADMIN)
+        Admin ->> Client: Select Member from dropdown and click Assign Task
+        Client ->> Routes: PATCH /api/tasks/:taskId/assign with Bearer JWT_TOKEN
+        Routes ->> Routes: JWT Middleware - verifyToken
+        Routes ->> Routes: Role Guard - checkRole ADMIN
         Routes ->> TaskController: assignTask(req, res)
         TaskController ->> TaskService: assignTask(taskId, memberId)
         TaskService ->> TaskRepository: findById(taskId)
-        TaskRepository ->> Database: db.tasks.findOne({ _id: taskId })
+        TaskRepository ->> Database: db.tasks.findOne by taskId
         Database -->> TaskRepository: Task document
         TaskRepository -->> TaskService: Task object
         TaskService ->> TaskService: validateMemberInProject(memberId, projectId)
-        TaskService ->> TaskRepository: update(taskId, { assignedTo: memberId })
-        TaskRepository ->> Database: db.tasks.updateOne({ _id: taskId }, { $set: { assignedTo: memberId } })
+        TaskService ->> TaskRepository: update taskId with assignedTo memberId
+        TaskRepository ->> Database: db.tasks.updateOne set assignedTo memberId
         Database -->> TaskRepository: Updated task document
         TaskRepository -->> TaskService: Updated Task object
     end
@@ -99,26 +99,26 @@ sequenceDiagram
     %% PHASE 4: Notification Trigger (Observer Pattern)
     %% ════════════════════════════════════════════════════════════════════════
     rect rgb(60, 30, 10)
-        Note over Admin, Database: ── PHASE 4: Notification Trigger (Observer Pattern) ──
+        Note over Admin, Database: PHASE 4 - Notification Trigger (Observer Pattern)
 
-        TaskService ->> NotificationService: notify(memberId, "Task assigned: [title]", "TASK_ASSIGNED")
-        Note right of NotificationService: Observer Pattern:<br/>TaskService (Subject) notifies<br/>NotificationService (Observer)<br/>Fully decoupled via interface
-        NotificationService ->> NotificationRepository: save({ userId: memberId, message, type, isRead: false })
+        TaskService ->> NotificationService: notify(memberId, Task assigned title, TASK_ASSIGNED)
+        Note right of NotificationService: Observer Pattern - TaskService is Subject, NotificationService is Observer
+        NotificationService ->> NotificationRepository: save notification for memberId with isRead false
         NotificationRepository ->> Database: db.notifications.insertOne(notificationDocument)
         Database -->> NotificationRepository: Inserted notification with _id
         NotificationRepository -->> NotificationService: Notification saved
-        NotificationService -->> TaskService: Notification dispatched ✓
+        NotificationService -->> TaskService: Notification dispatched successfully
     end
 
     %% ════════════════════════════════════════════════════════════════════════
     %% PHASE 5: Final Response
     %% ════════════════════════════════════════════════════════════════════════
     rect rgb(10, 20, 50)
-        Note over Admin, Database: ── PHASE 5: Final Response ──
+        Note over Admin, Database: PHASE 5 - Final Response
 
-        TaskService -->> TaskController: Assignment complete { task, notification }
-        TaskController -->> Client: 200 OK { message: "Task assigned successfully", task: { id, assignedTo: memberId, status: "TODO" } }
-        Client -->> Admin: Show "Task assigned to Member" success confirmation
+        TaskService -->> TaskController: Assignment complete with task and notification
+        TaskController -->> Client: 200 OK - Task assigned successfully with updated task object
+        Client -->> Admin: Show Task assigned to Member success confirmation
     end
 ```
 

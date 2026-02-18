@@ -74,9 +74,9 @@ erDiagram
 
 ```mermaid
 flowchart LR
-    Admin(["👑 Admin"])
-    Member(["👤 Member"])
-    System(["⚙️ System"])
+    Admin([" Admin"])
+    Member([" Member"])
+    System([" System"])
 
     TF["🖥️ TaskFlow\nSystem"]
 
@@ -101,8 +101,8 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-    Admin(["👑 Admin"])
-    Member(["👤 Member"])
+    Admin([" Admin"])
+    Member([" Member"])
 
     subgraph P1["Process 1: Authentication"]
         P1A["1.1 Validate Credentials"]

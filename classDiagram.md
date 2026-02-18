@@ -227,7 +227,7 @@ classDiagram
 
 ```mermaid
 flowchart TD
-    U["🧑 User (Base Class)
+    U[" User (Base Class)
     ─────────────────────
     - id: String
     - name: String
@@ -241,7 +241,7 @@ flowchart TD
     + getProfile()
     + validatePassword()"]
 
-    A["👑 Admin (extends User)
+    A[" Admin (extends User)
     ─────────────────────
     + createProject()
     + addMember()
@@ -251,7 +251,7 @@ flowchart TD
     + canCreateTask() → true
     + canAssignTask() → true"]
 
-    M["👤 Member (extends User)
+    M[" Member (extends User)
     ─────────────────────
     + viewAssignedTasks()
     + updateTaskStatus()

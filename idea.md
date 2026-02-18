@@ -29,7 +29,7 @@ The system incorporates an event-driven notification engine and a dashboard anal
 
 ## 3. Scope
 
-### ✅ In Scope
+###  In Scope
 
 | # | Feature |
 |---|---------|
@@ -44,7 +44,7 @@ The system incorporates an event-driven notification engine and a dashboard anal
 | 9 | Dashboard analytics: Total, Completed, Overdue tasks, Completion % |
 | 10 | Notification system: Triggered on task assignment and status change |
 
-### ❌ Out of Scope
+###  Out of Scope
 
 | # | Feature |
 |---|---------|

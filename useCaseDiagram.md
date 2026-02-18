@@ -9,39 +9,39 @@
 ```mermaid
 graph TB
     %% ─── Actors ───────────────────────────────────────────────────────────────
-    Admin(["👤 Admin"])
-    Member(["👤 Member"])
-    System(["⚙️ System"])
+    Admin([" Admin"])
+    Member([" Member"])
+    System([" System"])
 
     %% ─── System Boundary ──────────────────────────────────────────────────────
     subgraph TaskFlow["🖥️ TaskFlow System Boundary"]
         direction TB
 
-        subgraph AUTH["🔐 Authentication"]
+        subgraph AUTH[" Authentication"]
             UC1["Register"]
             UC2["Login"]
             UC3["Validate JWT Token"]
         end
 
-        subgraph PROJECT["📁 Project Management"]
+        subgraph PROJECT[" Project Management"]
             UC4["Create Project"]
             UC5["Add Member to Project"]
             UC6["View Project Details"]
         end
 
-        subgraph TASK["✅ Task Management"]
+        subgraph TASK[" Task Management"]
             UC7["Create Task"]
             UC8["Assign Task to Member"]
             UC9["View Assigned Tasks"]
             UC10["Update Task Status"]
         end
 
-        subgraph DASHBOARD["📊 Dashboard & Analytics"]
+        subgraph DASHBOARD[" Dashboard & Analytics"]
             UC11["View Dashboard"]
             UC12["Generate Analytics"]
         end
 
-        subgraph NOTIFY["🔔 Notifications"]
+        subgraph NOTIFY[" Notifications"]
             UC13["Trigger Notification"]
             UC14["View Notifications"]
         end
