@@ -1,0 +1,28 @@
+# Render.com blueprint for TaskFlow backend.
+# Deploy: https://render.com/docs/blueprint-spec
+#
+# Usage:
+#   1. Push this repo to GitHub.
+#   2. On Render → New + Blueprint → pick your repo → Apply.
+#   3. Render provisions the web service with the build/start commands below.
+services:
+  - type: web
+    name: taskflow-api
+    runtime: node
+    region: oregon
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MONGODB_URI
+        sync: false  # set via the Render dashboard — should point at MongoDB Atlas
+      - key: SEED_ON_START
+        value: "false"
+    healthCheckPath: /api/health

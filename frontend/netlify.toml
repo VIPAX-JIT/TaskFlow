@@ -1,0 +1,15 @@
+# Netlify deployment config for TaskFlow frontend.
+# Connect the repo, set VITE_API_URL in the Netlify UI, and Netlify will
+# auto-detect this file.
+
+[build]
+  base      = "frontend"
+  publish   = "dist"
+  command   = "npm run build"
+
+# Vite SPA fallback — every unknown route should serve index.html so
+# react-router can handle it client-side.
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
